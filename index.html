@@ -3,458 +3,239 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NY Sports Feed</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Obul API Marketplace</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg-primary: #0f0f23;
-      --bg-secondary: #1a1a2e;
-      --bg-card: #16213e;
-      --accent: #00d4ff;
-      --accent-glow: rgba(0, 212, 255, 0.3);
-      --text-primary: #ffffff;
-      --text-secondary: #a0a0b0;
-      --text-muted: #666680;
-      --mets: #ff6600;
-      --yankees: #003087;
-      --knicks: #006bb6;
-      --giants: #0b2265;
-      --jets: #125740;
-      --success: #00ff88;
-      --error: #ff4444;
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a24;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --text-primary: #fff;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border: #2a2a3a;
+      --chat: #10b981;
+      --coding: #3b82f6;
+      --entertainment: #f59e0b;
+      --productivity: #ec4899;
     }
-    body { 
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+    body {
+      font-family: 'Inter', sans-serif;
       background: var(--bg-primary);
-      background-image: 
-        radial-gradient(ellipse at top, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at bottom right, rgba(255, 102, 0, 0.05) 0%, transparent 40%);
-      color: var(--text-primary); 
-      min-height: 100vh; 
-      padding: 24px; 
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 40px;
     }
-    .container { max-width: 520px; margin: 0 auto; }
+    .container { max-width: 1200px; margin: 0 auto; }
     
-    header { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      margin-bottom: 32px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    header {
+      text-align: center;
+      margin-bottom: 60px;
     }
-    h1 { 
-      font-size: 1.4rem; 
+    h1 {
+      font-size: 3rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff, var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
-    .refresh-btn { 
-      background: linear-gradient(135deg, var(--accent) 0%, #00b8e6 100%);
-      color: #0f0f23; 
-      border: none; 
-      padding: 10px 20px; 
-      border-radius: 12px; 
-      font-weight: 600; 
-      font-size: 0.9rem;
-      cursor: pointer; 
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px var(--accent-glow);
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+    
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    
+    .category {
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      padding: 28px;
+      border: 1px solid var(--border);
+    }
+    
+    .category-header {
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-    .refresh-btn:hover { 
-      transform: translateY(-2px);
-      box-shadow: 0 6px 25px var(--accent-glow);
-    }
-    .refresh-btn:disabled { 
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .refresh-btn.loading { 
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+      gap: 14px;
+      margin-bottom: 24px;
     }
     
-    .feeds { display: flex; flex-direction: column; gap: 14px; }
-    
-    .feed-card { 
-      background: linear-gradient(135deg, var(--bg-card) 0%, rgba(22, 33, 62, 0.8) 100%);
-      border-radius: 16px; 
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.04);
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .feed-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--accent);
-      opacity: 0.8;
-    }
-    .feed-card.mets::before { background: var(--mets); }
-    .feed-card.yankees::before { background: var(--yankees); }
-    .feed-card.knicks::before { background: var(--knicks); }
-    .feed-card.giants::before { background: var(--giants); }
-    .feed-card.jets::before { background: var(--jets); }
-    
-    .feed-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.1);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    }
-    
-    .feed-header { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      margin-bottom: 14px; 
-    }
-    .feed-title { 
-      font-weight: 700; 
-      font-size: 1rem; 
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .team-logo {
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
+    .category-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
+      font-size: 22px;
     }
-    .mets .team-logo { background: var(--mets); }
-    .yankees .team-logo { background: var(--yankees); }
-    .knicks .team-logo { background: var(--knicks); }
-    .giants .team-logo { background: var(--giants); }
-    .jets .team-logo { background: var(--jets); }
+    .category.chat .category-icon { background: rgba(16, 185, 129, 0.15); }
+    .category.coding .category-icon { background: rgba(59, 130, 246, 0.15); }
+    .category.entertainment .category-icon { background: rgba(245, 158, 11, 0.15); }
+    .category.productivity .category-icon { background: rgba(236, 72, 153, 0.15); }
     
-    .feed-time { 
-      font-size: 0.7rem; 
-      color: var(--text-muted); 
+    .category-title {
+      font-size: 1.3rem;
+      font-weight: 600;
     }
-    .feed-content { 
-      font-size: 0.85rem; 
-      line-height: 1.5; 
+    .category.chat .category-title { color: var(--chat); }
+    .category.coding .category-title { color: var(--coding); }
+    .category.entertainment .category-title { color: var(--entertainment); }
+    .category.productivity .category-title { color: var(--productivity); }
+    
+    .api-count {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-left: auto;
     }
-    .feed-content ul { 
-      list-style: none; 
-    }
-    .feed-content li { 
-      padding: 6px 0;
-      color: var(--text-secondary);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+    
+    .api-grid {
       display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .feed-content li:last-child { border-bottom: none; }
-    .feed-content li::before {
-      content: '●';
-      color: var(--accent);
-      font-size: 5px;
-      margin-top: 6px;
-      flex-shrink: 0;
-    }
-    .feed-content li.new::before {
-      color: var(--success);
+      flex-wrap: wrap;
+      gap: 10px;
     }
     
-    .error { 
-      background: rgba(255, 68, 68, 0.1);
-      border: 1px solid rgba(255, 68, 68, 0.2);
-      color: var(--error);
-      padding: 14px;
+    .api-tag {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 10px;
-      font-size: 0.8rem;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .api-tag:hover {
+      background: var(--bg-primary);
+      border-color: var(--accent);
+      color: var(--text-primary);
+      transform: translateY(-2px);
     }
     
-    .loading-placeholder {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .loading-placeholder div {
-      height: 12px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%);
-      background-size: 200% 100%;
-      border-radius: 3px;
-      animation: shimmer 1.5s infinite;
-    }
-    .loading-placeholder div:nth-child(1) { width: 90%; }
-    .loading-placeholder div:nth-child(2) { width: 75%; }
-    .loading-placeholder div:nth-child(3) { width: 85%; }
-    .loading-placeholder div:nth-child(4) { width: 60%; }
-    
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    
-    .last-updated { 
-      text-align: center; 
-      color: var(--text-muted); 
-      font-size: 0.7rem; 
-      margin-top: 20px; 
-    }
-    
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
+    .uncategorized {
+      margin-top: 40px;
+      background: var(--bg-secondary);
       border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      background: rgba(0, 255, 136, 0.1);
-      color: var(--success);
+      padding: 28px;
+      border: 1px solid var(--border);
     }
-    .status-badge::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--success);
+    .uncategorized h2 {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 20px;
     }
-    
-    .loading-overlay { 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      right: 0; 
-      bottom: 0; 
-      background: rgba(15, 15, 35, 0.9);
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      z-index: 100;
-      backdrop-filter: blur(5px);
+    .uncategorized .api-grid {
+      justify-content: flex-start;
     }
-    .loading-overlay.hidden { display: none; }
-    .loader {
-      width: 48px;
-      height: 48px;
-      border: 3px solid rgba(255,255,255,0.1);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <div>
-        <h1>NY Sports</h1>
-        <span class="status-badge">Live</span>
-      </div>
-      <button class="refresh-btn" onclick="refreshAll()">
-        <span>🔄</span> Refresh
-      </button>
+      <h1>🧠 Obul API Marketplace</h1>
+      <p class="subtitle">APIs powered by x402 micropayments</p>
     </header>
     
-    <div class="feeds" id="feeds">
-      <div class="feed-card mets">
-        <div class="feed-header">
-          <span class="feed-title">
-            <span class="team-logo">NYM</span>
-            NY Mets
-          </span>
+    <div class="categories">
+      <!-- Chat -->
+      <div class="category chat">
+        <div class="category-header">
+          <div class="category-icon">💬</div>
+          <span class="category-title">Chat</span>
+          <span class="api-count">4 APIs</span>
         </div>
-        <div class="feed-content" id="mets">
-          <div class="loading-placeholder">
-            <div></div><div></div><div></div><div></div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="feed-card yankees">
-        <div class="feed-header">
-          <span class="feed-title">
-            <span class="team-logo">NYY</span>
-            NY Yankees
-          </span>
-        </div>
-        <div class="feed-content" id="yankees">
-          <div class="loading-placeholder">
-            <div></div><div></div><div></div><div></div>
-          </div>
+        <div class="api-grid">
+          <span class="api-tag">grokx</span>
+          <span class="api-tag">parallel</span>
+          <span class="api-tag">slamai</span>
+          <span class="api-tag">nano-banana</span>
         </div>
       </div>
       
-      <div class="feed-card knicks">
-        <div class="feed-header">
-          <span class="feed-title">
-            <span class="team-logo">NYK</span>
-            NY Knicks
-          </span>
+      <!-- Coding -->
+      <div class="category coding">
+        <div class="category-header">
+          <div class="category-icon">💻</div>
+          <span class="category-title">Coding</span>
+          <span class="api-count">2 APIs</span>
         </div>
-        <div class="feed-content" id="knicks">
-          <div class="loading-placeholder">
-            <div></div><div></div><div></div><div></div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="feed-card giants">
-        <div class="feed-header">
-          <span class="feed-title">
-            <span class="team-logo">NYG</span>
-            NY Giants
-          </span>
-        </div>
-        <div class="feed-content" id="giants">
-          <div class="loading-placeholder">
-            <div></div><div></div><div></div><div></div>
-          </div>
+        <div class="api-grid">
+          <span class="api-tag">browserbase</span>
+          <span class="api-tag">baseten</span>
         </div>
       </div>
       
-      <div class="feed-card jets">
-        <div class="feed-header">
-          <span class="feed-title">
-            <span class="team-logo">NYJ</span>
-            NY Jets
-          </span>
+      <!-- Entertainment -->
+      <div class="category entertainment">
+        <div class="category-header">
+          <div class="category-icon">🎮</div>
+          <span class="category-title">Entertainment</span>
+          <span class="api-count">4 APIs</span>
         </div>
-        <div class="feed-content" id="jets">
-          <div class="loading-placeholder">
-            <div></div><div></div><div></div><div></div>
-          </div>
+        <div class="api-grid">
+          <span class="api-tag">logo</span>
+          <span class="api-tag">tavus</span>
+          <span class="api-tag">reddit</span>
+          <span class="api-tag">scrape-creators</span>
+        </div>
+      </div>
+      
+      <!-- Productivity -->
+      <div class="category productivity">
+        <div class="category-header">
+          <div class="category-icon">⚡</div>
+          <span class="category-title">Productivity</span>
+          <span class="api-count">50+ APIs</span>
+        </div>
+        <div class="api-grid">
+          <span class="api-tag">exa</span>
+          <span class="api-tag">searchapi</span>
+          <span class="api-tag">perplexity</span>
+          <span class="api-tag">tavily</span>
+          <span class="api-tag">jina</span>
+          <span class="api-tag">firecrawl</span>
+          <span class="api-tag">scrapegraph</span>
+          <span class="api-tag">minifetch</span>
+          <span class="api-tag">apollo</span>
+          <span class="api-tag">hunter</span>
+          <span class="api-tag">coingecko</span>
+          <span class="api-tag">nansen</span>
+          <span class="api-tag">neynar</span>
+          <span class="api-tag">textbelt</span>
+          <span class="api-tag">chronos</span>
+          <span class="api-tag">pinata</span>
+          <span class="api-tag">google-maps</span>
+          <span class="api-tag">amadeus</span>
         </div>
       </div>
     </div>
     
-    <div class="last-updated" id="lastUpdated"></div>
+    <div class="uncategorized">
+      <h2>🚧 Infrastructure & Utilities</h2>
+      <div class="api-grid">
+        <span class="api-tag">obul-proxy</span>
+        <span class="api-tag">obul-cli</span>
+        <span class="api-tag">clado</span>
+        <span class="api-tag">cnvrt.ing</span>
+        <span class="api-tag">fiber</span>
+        <span class="api-tag">precip</span>
+        <span class="api-tag">sixtyfour</span>
+        <span class="api-tag">valyu</span>
+        <span class="api-tag">zai</span>
+        <span class="api-tag">x402engine-audio</span>
+        <span class="api-tag">x402engine-image</span>
+        <span class="api-tag">x402engine-web</span>
+        <span class="api-tag">x402engine-chain</span>
+      </div>
+    </div>
   </div>
-  
-  <div class="loading-overlay hidden" id="loading">
-    <div class="loader"></div>
-  </div>
-
-  <script>
-    const OBUL_API_KEY = 'd93114be-a50d-478e-89f7-7aecda2bfaa3';
-    const PROXY_URL = 'https://proxy.obul.ai/proxy/https/firecrawl.x402endpoints.com/v1/scrape';
-    
-    const FEEDS = [
-      { id: 'mets', name: 'NY Mets', url: 'https://www.espn.com/mlb/team/_/name/nym/new-york-mets' },
-      { id: 'yankees', name: 'NY Yankees', url: 'https://www.espn.com/mlb/team/_/name/nyy/new-york-yankees' },
-      { id: 'knicks', name: 'NY Knicks', url: 'https://www.espn.com/nba/team/_/name/ny/new-york-knicks' },
-      { id: 'giants', name: 'NY Giants', url: 'https://www.espn.com/nfl/team/_/name/nyg/new-york-giants' },
-      { id: 'jets', name: 'NY Jets', url: 'https://www.espn.com/nfl/team/_/name/nyj/new-york-jets' }
-    ];
-    
-    function showLoading(show) {
-      document.getElementById('loading').classList.toggle('hidden', !show);
-    }
-    
-    async function fetchFeed(feed) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 25000);
-        
-        const response = await fetch(PROXY_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-obul-api-key': OBUL_API_KEY
-          },
-          body: JSON.stringify({
-            url: feed.url,
-            formats: ['markdown']
-          }),
-          signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (!data.success) {
-          throw new Error(data.error || 'Unknown error');
-        }
-        
-        return parseFeed(feed.id, data.data.markdown);
-      } catch (err) {
-        if (err.name === 'AbortError') {
-          return '<div class="error">⏱️ Request timed out</div>';
-        }
-        return `<div class="error">⚠️ ${err.message}</div>`;
-      }
-    }
-    
-    function parseFeed(id, markdown) {
-      const headlines = [];
-      const lines = markdown.split('\n');
-      
-      for (const line of lines) {
-        if (line.includes('**') && (line.includes('-') || line.includes('h'))) {
-          const match = line.match(/\*\*([^*]+)\*\*/);
-          if (match && headlines.length < 4) {
-            headlines.push(match[1].trim());
-          }
-        }
-      }
-      
-      if (headlines.length === 0) {
-        return '<ul><li>No headlines</li></ul>';
-      }
-      
-      return '<ul>' + headlines.map((h, i) => 
-        `<li class="${i === 0 ? 'new' : ''}">${h}</li>`
-      ).join('') + '</ul>';
-    }
-    
-    async function refreshAll() {
-      const btn = document.querySelector('.refresh-btn');
-      btn.disabled = true;
-      btn.classList.add('loading');
-      showLoading(true);
-      
-      try {
-        const results = await Promise.all(FEEDS.map(feed => fetchFeed(feed)));
-        
-        FEEDS.forEach((feed, i) => {
-          document.getElementById(feed.id).innerHTML = results[i];
-        });
-        
-        document.getElementById('lastUpdated').textContent = 
-          'Updated ' + new Date().toLocaleTimeString();
-      } catch (err) {
-        alert('Error: ' + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.classList.remove('loading');
-        showLoading(false);
-      }
-    }
-    
-    refreshAll();
-  </script>
 </body>
 </html>
