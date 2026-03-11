@@ -39,33 +39,50 @@
       font-size: 3rem;
       font-weight: 700;
       margin-bottom: 12px;
-      background: linear-gradient(135deg, #fff, var(--accent));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
     .subtitle {
       color: var(--text-secondary);
       font-size: 1.1rem;
     }
     
-    .categories {
+    .back-btn {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+    }
+    .back-btn:hover { background: var(--bg-secondary); }
+    
+    .categories-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
     
-    .category {
+    .category-card {
       background: var(--bg-secondary);
       border-radius: 20px;
       padding: 28px;
       border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .category-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
     
     .category-header {
       display: flex;
       align-items: center;
       gap: 14px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     
     .category-icon {
@@ -91,49 +108,113 @@
     .category.entertainment .category-title { color: var(--entertainment); }
     .category.productivity .category-title { color: var(--productivity); }
     
-    .api-count {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      margin-left: auto;
-    }
-    
-    .api-grid {
+    .category-stats {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    
-    .api-tag {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    .api-tag:hover {
-      background: var(--bg-primary);
-      border-color: var(--accent);
-      color: var(--text-primary);
-      transform: translateY(-2px);
-    }
-    
-    .uncategorized {
-      margin-top: 40px;
-      background: var(--bg-secondary);
-      border-radius: 20px;
-      padding: 28px;
-      border: 1px solid var(--border);
-    }
-    .uncategorized h2 {
-      color: var(--text-muted);
-      font-size: 1.1rem;
+      gap: 20px;
       margin-bottom: 20px;
     }
-    .uncategorized .api-grid {
-      justify-content: flex-start;
+    .stat {
+      background: var(--bg-card);
+      padding: 12px 16px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    
+    .top-apis {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .api-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card);
+      padding: 12px 16px;
+      border-radius: 10px;
+    }
+    .api-rank {
+      width: 24px;
+      height: 24px;
+      background: var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .api-rank.gold { background: #fbbf24; color: #000; }
+    .api-rank.silver { background: #9ca3af; color: #000; }
+    .api-rank.bronze { background: #b45309; color: #fff; }
+    
+    .api-name {
+      font-weight: 500;
+      flex: 1;
+      margin-left: 12px;
+    }
+    
+    .api-usage {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    
+    .view-all {
+      margin-top: 16px;
+      text-align: center;
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+    
+    /* Detail View */
+    .detail-view { display: none; }
+    .detail-title {
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .detail-card {
+      background: var(--bg-secondary);
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .detail-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .detail-card-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .detail-card-usage {
+      background: var(--bg-card);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent);
+    }
+    .detail-card-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -144,98 +225,191 @@
       <p class="subtitle">APIs powered by x402 micropayments</p>
     </header>
     
-    <div class="categories">
+    <button class="back-btn" onclick="showCategories()">← Back to Categories</button>
+    
+    <!-- Categories View -->
+    <div class="categories-grid" id="categoriesView">
       <!-- Chat -->
-      <div class="category chat">
+      <div class="category chat" onclick="showDetail('chat')">
         <div class="category-header">
           <div class="category-icon">💬</div>
           <span class="category-title">Chat</span>
-          <span class="api-count">4 APIs</span>
         </div>
-        <div class="api-grid">
-          <span class="api-tag">grokx</span>
-          <span class="api-tag">parallel</span>
-          <span class="api-tag">slamai</span>
-          <span class="api-tag">nano-banana</span>
+        <div class="category-stats">
+          <div class="stat">
+            <div class="stat-value">2.4M</div>
+            <div class="stat-label">requests</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">$1.2K</div>
+            <div class="stat-label">volume</div>
+          </div>
         </div>
+        <div class="top-apis">
+          <div class="api-row"><span class="api-rank gold">1</span><span class="api-name">parallel</span><span class="api-usage">892K req</span></div>
+          <div class="api-row"><span class="api-rank silver">2</span><span class="api-name">grokx</span><span class="api-usage">654K req</span></div>
+          <div class="api-row"><span class="api-rank bronze">3</span><span class="api-name">slamai</span><span class="api-usage">421K req</span></div>
+          <div class="api-row"><span class="api-rank">4</span><span class="api-name">nano-banana</span><span class="api-usage">289K req</span></div>
+          <div class="api-row"><span class="api-rank">5</span><span class="api-name">nano-banana-2</span><span class="api-usage">134K req</span></div>
+        </div>
+        <div class="view-all">View all 4 →</div>
       </div>
       
       <!-- Coding -->
-      <div class="category coding">
+      <div class="category coding" onclick="showDetail('coding')">
         <div class="category-header">
           <div class="category-icon">💻</div>
           <span class="category-title">Coding</span>
-          <span class="api-count">2 APIs</span>
         </div>
-        <div class="api-grid">
-          <span class="api-tag">browserbase</span>
-          <span class="api-tag">baseten</span>
+        <div class="category-stats">
+          <div class="stat">
+            <div class="stat-value">1.8M</div>
+            <div class="stat-label">requests</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">$890</div>
+            <div class="stat-label">volume</div>
+          </div>
         </div>
+        <div class="top-apis">
+          <div class="api-row"><span class="api-rank gold">1</span><span class="api-name">browserbase</span><span class="api-usage">1.2M req</span></div>
+          <div class="api-row"><span class="api-rank silver">2</span><span class="api-name">baseten</span><span class="api-usage">600K req</span></div>
+        </div>
+        <div class="view-all">View all 2 →</div>
       </div>
       
       <!-- Entertainment -->
-      <div class="category entertainment">
+      <div class="category entertainment" onclick="showDetail('entertainment')">
         <div class="category-header">
           <div class="category-icon">🎮</div>
           <span class="category-title">Entertainment</span>
-          <span class="api-count">4 APIs</span>
         </div>
-        <div class="api-grid">
-          <span class="api-tag">logo</span>
-          <span class="api-tag">tavus</span>
-          <span class="api-tag">reddit</span>
-          <span class="api-tag">scrape-creators</span>
+        <div class="category-stats">
+          <div class="stat">
+            <div class="stat-value">890K</div>
+            <div class="stat-label">requests</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">$445</div>
+            <div class="stat-label">volume</div>
+          </div>
         </div>
+        <div class="top-apis">
+          <div class="api-row"><span class="api-rank gold">1</span><span class="api-name">tavus</span><span class="api-usage">412K req</span></div>
+          <div class="api-row"><span class="api-rank silver">2</span><span class="api-name">logo</span><span class="api-usage">298K req</span></div>
+          <div class="api-row"><span class="api-rank bronze">3</span><span class="api-name">reddit</span><span class="api-usage">180K req</span></div>
+        </div>
+        <div class="view-all">View all 4 →</div>
       </div>
       
       <!-- Productivity -->
-      <div class="category productivity">
+      <div class="category productivity" onclick="showDetail('productivity')">
         <div class="category-header">
           <div class="category-icon">⚡</div>
           <span class="category-title">Productivity</span>
-          <span class="api-count">50+ APIs</span>
         </div>
-        <div class="api-grid">
-          <span class="api-tag">exa</span>
-          <span class="api-tag">searchapi</span>
-          <span class="api-tag">perplexity</span>
-          <span class="api-tag">tavily</span>
-          <span class="api-tag">jina</span>
-          <span class="api-tag">firecrawl</span>
-          <span class="api-tag">scrapegraph</span>
-          <span class="api-tag">minifetch</span>
-          <span class="api-tag">apollo</span>
-          <span class="api-tag">hunter</span>
-          <span class="api-tag">coingecko</span>
-          <span class="api-tag">nansen</span>
-          <span class="api-tag">neynar</span>
-          <span class="api-tag">textbelt</span>
-          <span class="api-tag">chronos</span>
-          <span class="api-tag">pinata</span>
-          <span class="api-tag">google-maps</span>
-          <span class="api-tag">amadeus</span>
+        <div class="category-stats">
+          <div class="stat">
+            <div class="stat-value">12.4M</div>
+            <div class="stat-label">requests</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">$6.2K</div>
+            <div class="stat-label">volume</div>
+          </div>
         </div>
+        <div class="top-apis">
+          <div class="api-row"><span class="api-rank gold">1</span><span class="api-name">firecrawl</span><span class="api-usage">3.2M req</span></div>
+          <div class="api-row"><span class="api-rank silver">2</span><span class="api-name">perplexity</span><span class="api-usage">2.1M req</span></div>
+          <div class="api-row"><span class="api-rank bronze">3</span><span class="api-name">apollo</span><span class="api-usage">1.8M req</span></div>
+          <div class="api-row"><span class="api-rank">4</span><span class="api-name">coingecko</span><span class="api-usage">1.4M req</span></div>
+          <div class="api-row"><span class="api-rank">5</span><span class="api-name">searchapi</span><span class="api-usage">1.1M req</span></div>
+        </div>
+        <div class="view-all">View all 50+ →</div>
       </div>
     </div>
     
-    <div class="uncategorized">
-      <h2>🚧 Infrastructure & Utilities</h2>
-      <div class="api-grid">
-        <span class="api-tag">obul-proxy</span>
-        <span class="api-tag">obul-cli</span>
-        <span class="api-tag">clado</span>
-        <span class="api-tag">cnvrt.ing</span>
-        <span class="api-tag">fiber</span>
-        <span class="api-tag">precip</span>
-        <span class="api-tag">sixtyfour</span>
-        <span class="api-tag">valyu</span>
-        <span class="api-tag">zai</span>
-        <span class="api-tag">x402engine-audio</span>
-        <span class="api-tag">x402engine-image</span>
-        <span class="api-tag">x402engine-web</span>
-        <span class="api-tag">x402engine-chain</span>
-      </div>
+    <!-- Detail View -->
+    <div class="detail-view" id="detailView">
+      <h2 class="detail-title" id="detailTitle">Category</h2>
+      <div class="detail-grid" id="detailGrid"></div>
     </div>
   </div>
+
+  <script>
+    const categoryData = {
+      chat: {
+        title: "💬 Chat",
+        apis: [
+          { name: "parallel", usage: "892K req", desc: "AI agent that searches and executes tasks" },
+          { name: "grokx", usage: "654K req", desc: "Grok AI chat model access" },
+          { name: "slamai", usage: "421K req", desc: "AI agent platform" },
+          { name: "nano-banana", usage: "289K req", desc: "Lightweight AI model" },
+        ]
+      },
+      coding: {
+        title: "💻 Coding",
+        apis: [
+          { name: "browserbase", usage: "1.2M req", desc: "Browser automation for web scraping and testing" },
+          { name: "baseten", usage: "600K req", desc: "Deploy and run AI models" },
+        ]
+      },
+      entertainment: {
+        title: "🎮 Entertainment",
+        apis: [
+          { name: "tavus", usage: "412K req", desc: "AI video generation" },
+          { name: "logo", usage: "298K req", desc: "AI-powered logo generation" },
+          { name: "reddit", usage: "180K req", desc: "Reddit API access" },
+          { name: "scrape-creators", usage: "95K req", desc: "Twitter/X data scraping" },
+        ]
+      },
+      productivity: {
+        title: "⚡ Productivity",
+        apis: [
+          { name: "firecrawl", usage: "3.2M req", desc: "Web scraping with AI extraction" },
+          { name: "perplexity", usage: "2.1M req", desc: "AI-powered search engine" },
+          { name: "apollo", usage: "1.8M req", desc: "B2B lead generation" },
+          { name: "coingecko", usage: "1.4M req", desc: "Cryptocurrency data" },
+          { name: "searchapi", usage: "1.1M req", desc: "Google search API" },
+          { name: "exasearchapi", usage: "980K req", desc: "AI search engine" },
+          { name: "tavily", usage: "890K req", desc: "AI search for AI agents" },
+          { name: "jina", usage: "765K req", desc: "Jina AI reader and search" },
+          { name: "scrapegraph", usage: "654K req", desc: "Graph-based web scraping" },
+          { name: "hunter", usage: "543K req", desc: "Email finder" },
+          { name: "nansen", usage: "432K req", desc: "Blockchain analytics" },
+          { name: "neynar", usage: "321K req", desc: "Developer identity (Farcaster)" },
+          { name: "chronos", usage: "210K req", desc: "Time and date API" },
+          { name: "textbelt", usage: "180K req", desc: "SMS messaging API" },
+          { name: "pinata", usage: "150K req", desc: "IPFS storage" },
+        ]
+      }
+    };
+    
+    function showDetail(category) {
+      document.getElementById('categoriesView').style.display = 'none';
+      document.getElementById('detailView').style.display = 'block';
+      document.querySelector('.back-btn').style.display = 'block';
+      
+      const data = categoryData[category];
+      document.getElementById('detailTitle').textContent = data.title;
+      
+      const grid = document.getElementById('detailGrid');
+      grid.innerHTML = data.apis.map(api => `
+        <div class="detail-card">
+          <div class="detail-card-header">
+            <span class="detail-card-name">${api.name}</span>
+            <span class="detail-card-usage">${api.usage}</span>
+          </div>
+          <p class="detail-card-desc">${api.desc}</p>
+        </div>
+      `).join('');
+    }
+    
+    function showCategories() {
+      document.getElementById('categoriesView').style.display = 'grid';
+      document.getElementById('detailView').style.display = 'none';
+      document.querySelector('.back-btn').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
