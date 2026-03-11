@@ -8,23 +8,28 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --bg-card: #1a1a24;
-      --accent: #6366f1;
-      --accent-hover: #818cf8;
-      --text-primary: #fff;
-      --text-secondary: #9ca3af;
-      --text-muted: #6b7280;
-      --border: #2a2a3a;
-      --chat: #10b981;
-      --coding: #3b82f6;
-      --entertainment: #f59e0b;
-      --productivity: #ec4899;
+      --bg-primary: #F5F1E9;
+      --bg-grid: #E8E1D6;
+      --bg-card: #FFFFFF;
+      --text-primary: #0B0B0B;
+      --text-secondary: #5E5E5E;
+      --text-muted: #A8A8A8;
+      --accent: #B88F57;
+      --accent-light: #C6A56A;
+      --border: #ECE8E3;
+      --shadow: rgba(0,0,0,0.04);
+      --chat: #B88F57;
+      --coding: #8B9DC3;
+      --entertainment: #C4A77D;
+      --productivity: #A89F8B;
     }
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg-primary);
+      background-image: 
+        linear-gradient(var(--bg-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+      background-size: 24px 24px;
       color: var(--text-primary);
       min-height: 100vh;
       padding: 40px;
@@ -39,6 +44,7 @@
       font-size: 3rem;
       font-weight: 700;
       margin-bottom: 12px;
+      color: var(--text-primary);
     }
     .subtitle {
       color: var(--text-secondary);
@@ -56,7 +62,7 @@
       margin-bottom: 30px;
       font-size: 0.9rem;
     }
-    .back-btn:hover { background: var(--bg-secondary); }
+    .back-btn:hover { background: var(--bg-primary); }
     
     .categories-grid {
       display: grid;
@@ -65,17 +71,18 @@
     }
     
     .category-card {
-      background: var(--bg-secondary);
-      border-radius: 20px;
-      padding: 28px;
+      background: var(--bg-card);
       border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
       cursor: pointer;
       transition: all 0.3s;
+      box-shadow: 0 2px 8px var(--shadow);
     }
     .category-card:hover {
       transform: translateY(-4px);
+      box-shadow: 0 8px 24px var(--shadow);
       border-color: var(--accent);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
     
     .category-header {
@@ -88,25 +95,20 @@
     .category-icon {
       width: 48px;
       height: 48px;
-      border-radius: 14px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 22px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
     }
-    .category.chat .category-icon { background: rgba(16, 185, 129, 0.15); }
-    .category.coding .category-icon { background: rgba(59, 130, 246, 0.15); }
-    .category.entertainment .category-icon { background: rgba(245, 158, 11, 0.15); }
-    .category.productivity .category-icon { background: rgba(236, 72, 153, 0.15); }
     
     .category-title {
       font-size: 1.3rem;
       font-weight: 600;
+      color: var(--text-primary);
     }
-    .category.chat .category-title { color: var(--chat); }
-    .category.coding .category-title { color: var(--coding); }
-    .category.entertainment .category-title { color: var(--entertainment); }
-    .category.productivity .category-title { color: var(--productivity); }
     
     .category-stats {
       display: flex;
@@ -114,10 +116,11 @@
       margin-bottom: 20px;
     }
     .stat {
-      background: var(--bg-card);
+      background: var(--bg-primary);
       padding: 12px 16px;
       border-radius: 10px;
       text-align: center;
+      border: 1px solid var(--border);
     }
     .stat-value {
       font-size: 1.4rem;
@@ -139,9 +142,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--bg-card);
+      background: var(--bg-primary);
       padding: 12px 16px;
       border-radius: 10px;
+      border: 1px solid var(--border);
     }
     .api-rank {
       width: 24px;
@@ -155,14 +159,15 @@
       font-weight: 600;
       color: var(--text-muted);
     }
-    .api-rank.gold { background: #fbbf24; color: #000; }
-    .api-rank.silver { background: #9ca3af; color: #000; }
-    .api-rank.bronze { background: #b45309; color: #fff; }
+    .api-rank.gold { background: var(--accent); color: #fff; }
+    .api-rank.silver { background: #9CA3AF; color: #fff; }
+    .api-rank.bronze { background: #B45309; color: #fff; }
     
     .api-name {
       font-weight: 500;
       flex: 1;
       margin-left: 12px;
+      color: var(--text-primary);
     }
     
     .api-usage {
@@ -175,6 +180,7 @@
       text-align: center;
       color: var(--accent);
       font-size: 0.9rem;
+      font-weight: 500;
     }
     
     /* Detail View */
@@ -189,10 +195,11 @@
       gap: 16px;
     }
     .detail-card {
-      background: var(--bg-secondary);
+      background: var(--bg-card);
       border-radius: 14px;
       padding: 20px;
       border: 1px solid var(--border);
+      box-shadow: 0 2px 8px var(--shadow);
     }
     .detail-card-header {
       display: flex;
@@ -205,11 +212,12 @@
       font-size: 1.1rem;
     }
     .detail-card-usage {
-      background: var(--bg-card);
+      background: var(--bg-primary);
       padding: 6px 12px;
       border-radius: 8px;
       font-size: 0.85rem;
       color: var(--accent);
+      font-weight: 500;
     }
     .detail-card-desc {
       color: var(--text-secondary);
@@ -230,7 +238,7 @@
     <!-- Categories View -->
     <div class="categories-grid" id="categoriesView">
       <!-- Chat -->
-      <div class="category chat" onclick="showDetail('chat')">
+      <div class="category-card" onclick="showDetail('chat')">
         <div class="category-header">
           <div class="category-icon">💬</div>
           <span class="category-title">Chat</span>
@@ -256,7 +264,7 @@
       </div>
       
       <!-- Coding -->
-      <div class="category coding" onclick="showDetail('coding')">
+      <div class="category-card" onclick="showDetail('coding')">
         <div class="category-header">
           <div class="category-icon">💻</div>
           <span class="category-title">Coding</span>
@@ -279,7 +287,7 @@
       </div>
       
       <!-- Entertainment -->
-      <div class="category entertainment" onclick="showDetail('entertainment')">
+      <div class="category-card" onclick="showDetail('entertainment')">
         <div class="category-header">
           <div class="category-icon">🎮</div>
           <span class="category-title">Entertainment</span>
@@ -303,7 +311,7 @@
       </div>
       
       <!-- Productivity -->
-      <div class="category productivity" onclick="showDetail('productivity')">
+      <div class="category-card" onclick="showDetail('productivity')">
         <div class="category-header">
           <div class="category-icon">⚡</div>
           <span class="category-title">Productivity</span>
@@ -371,16 +379,9 @@
           { name: "apollo", usage: "1.8M req", desc: "B2B lead generation" },
           { name: "coingecko", usage: "1.4M req", desc: "Cryptocurrency data" },
           { name: "searchapi", usage: "1.1M req", desc: "Google search API" },
-          { name: "exasearchapi", usage: "980K req", desc: "AI search engine" },
           { name: "tavily", usage: "890K req", desc: "AI search for AI agents" },
           { name: "jina", usage: "765K req", desc: "Jina AI reader and search" },
           { name: "scrapegraph", usage: "654K req", desc: "Graph-based web scraping" },
-          { name: "hunter", usage: "543K req", desc: "Email finder" },
-          { name: "nansen", usage: "432K req", desc: "Blockchain analytics" },
-          { name: "neynar", usage: "321K req", desc: "Developer identity (Farcaster)" },
-          { name: "chronos", usage: "210K req", desc: "Time and date API" },
-          { name: "textbelt", usage: "180K req", desc: "SMS messaging API" },
-          { name: "pinata", usage: "150K req", desc: "IPFS storage" },
         ]
       }
     };
