@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Obul API Marketplace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a24;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --text-primary: #fff;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border: #2a2a3a;
+      --chat: #10b981;
+      --coding: #3b82f6;
+      --entertainment: #f59e0b;
+      --productivity: #ec4899;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      padding: 40px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+    
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    
+    .category {
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      padding: 28px;
+      border: 1px solid var(--border);
+    }
+    
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    
+    .category-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .category.chat .category-icon { background: rgba(16, 185, 129, 0.15); }
+    .category.coding .category-icon { background: rgba(59, 130, 246, 0.15); }
+    .category.entertainment .category-icon { background: rgba(245, 158, 11, 0.15); }
+    .category.productivity .category-icon { background: rgba(236, 72, 153, 0.15); }
+    
+    .category-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .category.chat .category-title { color: var(--chat); }
+    .category.coding .category-title { color: var(--coding); }
+    .category.entertainment .category-title { color: var(--entertainment); }
+    .category.productivity .category-title { color: var(--productivity); }
+    
+    .api-count {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-left: auto;
+    }
+    
+    .api-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .api-tag {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .api-tag:hover {
+      background: var(--bg-primary);
+      border-color: var(--accent);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+    }
+    
+    .uncategorized {
+      margin-top: 40px;
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      padding: 28px;
+      border: 1px solid var(--border);
+    }
+    .uncategorized h2 {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+    .uncategorized .api-grid {
+      justify-content: flex-start;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧠 Obul API Marketplace</h1>
+      <p class="subtitle">APIs powered by x402 micropayments</p>
+    </header>
+    
+    <div class="categories">
+      <!-- Chat -->
+      <div class="category chat">
+        <div class="category-header">
+          <div class="category-icon">💬</div>
+          <span class="category-title">Chat</span>
+          <span class="api-count">4 APIs</span>
+        </div>
+        <div class="api-grid">
+          <span class="api-tag">grokx</span>
+          <span class="api-tag">parallel</span>
+          <span class="api-tag">slamai</span>
+          <span class="api-tag">nano-banana</span>
+        </div>
+      </div>
+      
+      <!-- Coding -->
+      <div class="category coding">
+        <div class="category-header">
+          <div class="category-icon">💻</div>
+          <span class="category-title">Coding</span>
+          <span class="api-count">2 APIs</span>
+        </div>
+        <div class="api-grid">
+          <span class="api-tag">browserbase</span>
+          <span class="api-tag">baseten</span>
+        </div>
+      </div>
+      
+      <!-- Entertainment -->
+      <div class="category entertainment">
+        <div class="category-header">
+          <div class="category-icon">🎮</div>
+          <span class="category-title">Entertainment</span>
+          <span class="api-count">4 APIs</span>
+        </div>
+        <div class="api-grid">
+          <span class="api-tag">logo</span>
+          <span class="api-tag">tavus</span>
+          <span class="api-tag">reddit</span>
+          <span class="api-tag">scrape-creators</span>
+        </div>
+      </div>
+      
+      <!-- Productivity -->
+      <div class="category productivity">
+        <div class="category-header">
+          <div class="category-icon">⚡</div>
+          <span class="category-title">Productivity</span>
+          <span class="api-count">50+ APIs</span>
+        </div>
+        <div class="api-grid">
+          <span class="api-tag">exa</span>
+          <span class="api-tag">searchapi</span>
+          <span class="api-tag">perplexity</span>
+          <span class="api-tag">tavily</span>
+          <span class="api-tag">jina</span>
+          <span class="api-tag">firecrawl</span>
+          <span class="api-tag">scrapegraph</span>
+          <span class="api-tag">minifetch</span>
+          <span class="api-tag">apollo</span>
+          <span class="api-tag">hunter</span>
+          <span class="api-tag">coingecko</span>
+          <span class="api-tag">nansen</span>
+          <span class="api-tag">neynar</span>
+          <span class="api-tag">textbelt</span>
+          <span class="api-tag">chronos</span>
+          <span class="api-tag">pinata</span>
+          <span class="api-tag">google-maps</span>
+          <span class="api-tag">amadeus</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="uncategorized">
+      <h2>🚧 Infrastructure & Utilities</h2>
+      <div class="api-grid">
+        <span class="api-tag">obul-proxy</span>
+        <span class="api-tag">obul-cli</span>
+        <span class="api-tag">clado</span>
+        <span class="api-tag">cnvrt.ing</span>
+        <span class="api-tag">fiber</span>
+        <span class="api-tag">precip</span>
+        <span class="api-tag">sixtyfour</span>
+        <span class="api-tag">valyu</span>
+        <span class="api-tag">zai</span>
+        <span class="api-tag">x402engine-audio</span>
+        <span class="api-tag">x402engine-image</span>
+        <span class="api-tag">x402engine-web</span>
+        <span class="api-tag">x402engine-chain</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
