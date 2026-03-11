@@ -18,17 +18,11 @@
       --accent-light: #C6A56A;
       --border: #ECE8E3;
       --shadow: rgba(0,0,0,0.04);
-      --chat: #B88F57;
-      --coding: #8B9DC3;
-      --entertainment: #C4A77D;
-      --productivity: #A89F8B;
     }
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg-primary);
-      background-image: 
-        linear-gradient(var(--bg-grid) 1px, transparent 1px),
-        linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
+      background-image: linear-gradient(var(--bg-grid) 1px, transparent 1px), linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
       background-size: 24px 24px;
       color: var(--text-primary);
       min-height: 100vh;
@@ -36,20 +30,21 @@
     }
     .container { max-width: 1200px; margin: 0 auto; }
     
-    header {
-      text-align: center;
-      margin-bottom: 60px;
+    header { text-align: center; margin-bottom: 50px; }
+    h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+    .subtitle { color: var(--text-secondary); font-size: 1rem; }
+    
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
     }
-    h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--text-primary);
-    }
-    .subtitle {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-    }
+    .breadcrumbs span { cursor: pointer; }
+    .breadcrumbs span:hover { color: var(--accent); }
+    .breadcrumbs .current { color: var(--text-primary); cursor: default; }
     
     .back-btn {
       display: none;
@@ -59,10 +54,9 @@
       padding: 10px 20px;
       border-radius: 10px;
       cursor: pointer;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       font-size: 0.9rem;
     }
-    .back-btn:hover { background: var(--bg-primary); }
     
     .categories-grid {
       display: grid;
@@ -79,151 +73,71 @@
       transition: all 0.3s;
       box-shadow: 0 2px 8px var(--shadow);
     }
-    .category-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px var(--shadow);
-      border-color: var(--accent);
-    }
+    .category-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px var(--shadow); border-color: var(--accent); }
     
-    .category-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-    
+    .category-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
     .category-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; background: var(--bg-primary); border: 1px solid var(--border);
     }
+    .category-title { font-size: 1.3rem; font-weight: 600; color: var(--text-primary); }
     
-    .category-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
+    .category-stats { display: flex; gap: 20px; margin-bottom: 20px; }
+    .stat { background: var(--bg-primary); padding: 12px 16px; border-radius: 10px; text-align: center; border: 1px solid var(--border); flex: 1; }
+    .stat-value { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); }
+    .stat-label { font-size: 0.75rem; color: var(--text-muted); }
     
-    .category-stats {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 20px;
+    .top-items { display: flex; flex-direction: column; gap: 8px; }
+    .item-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-primary); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border);
     }
-    .stat {
-      background: var(--bg-primary);
-      padding: 12px 16px;
-      border-radius: 10px;
-      text-align: center;
-      border: 1px solid var(--border);
+    .item-rank {
+      width: 24px; height: 24px; background: var(--border); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
     }
-    .stat-value {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
+    .item-rank.gold { background: var(--accent); color: #fff; }
+    .item-rank.silver { background: #9CA3AF; color: #fff; }
+    .item-rank.bronze { background: #B45309; color: #fff; }
+    .item-name { font-weight: 500; flex: 1; margin-left: 12px; color: var(--text-primary); }
+    .item-usage { font-size: 0.85rem; color: var(--text-muted); }
+    .view-all { margin-top: 16px; text-align: center; color: var(--accent); font-size: 0.9rem; font-weight: 500; }
     
-    .top-apis {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    /* Detail Views */
+    .detail-view, .service-view, .provider-view { display: none; }
+    .detail-title { font-size: 1.8rem; margin-bottom: 24px; }
     
-    .api-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg-primary);
-      padding: 12px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
-    .api-rank {
-      width: 24px;
-      height: 24px;
-      background: var(--border);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-    .api-rank.gold { background: var(--accent); color: #fff; }
-    .api-rank.silver { background: #9CA3AF; color: #fff; }
-    .api-rank.bronze { background: #B45309; color: #fff; }
+    .subcategory-section { margin-bottom: 30px; }
+    .subcategory-title { font-size: 1.1rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .service-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
     
-    .api-name {
-      font-weight: 500;
-      flex: 1;
-      margin-left: 12px;
-      color: var(--text-primary);
+    .service-card {
+      background: var(--bg-card); border-radius: 14px; padding: 20px;
+      border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
     }
+    .service-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .service-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .service-name { font-weight: 600; font-size: 1rem; }
+    .service-usage { background: var(--bg-primary); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--accent); }
+    .service-desc { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.4; }
+    .service-providers { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .provider-tag { background: var(--bg-primary); padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; color: var(--text-muted); border: 1px solid var(--border); }
     
-    .api-usage {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+    /* Provider Detail */
+    .provider-list { display: flex; flex-direction: column; gap: 12px; }
+    .provider-card {
+      background: var(--bg-card); border-radius: 12px; padding: 20px;
+      border: 1px solid var(--border); display: flex; align-items: center; gap: 16px;
     }
-    
-    .view-all {
-      margin-top: 16px;
-      text-align: center;
-      color: var(--accent);
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-    
-    /* Detail View */
-    .detail-view { display: none; }
-    .detail-title {
-      font-size: 1.8rem;
-      margin-bottom: 30px;
-    }
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-    .detail-card {
-      background: var(--bg-card);
-      border-radius: 14px;
-      padding: 20px;
-      border: 1px solid var(--border);
-      box-shadow: 0 2px 8px var(--shadow);
-    }
-    .detail-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .detail-card-name {
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .detail-card-usage {
-      background: var(--bg-primary);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      color: var(--accent);
-      font-weight: 500;
-    }
-    .detail-card-desc {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
+    .provider-rank { font-size: 1.2rem; font-weight: 700; color: var(--accent); min-width: 40px; }
+    .provider-info { flex: 1; }
+    .provider-name { font-weight: 600; font-size: 1.1rem; }
+    .provider-desc { color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px; }
+    .provider-stats { text-align: right; }
+    .provider-req { font-weight: 600; font-size: 1.1rem; }
+    .provider-vol { font-size: 0.8rem; color: var(--text-muted); }
   </style>
 </head>
 <body>
@@ -233,183 +147,261 @@
       <p class="subtitle">APIs powered by x402 micropayments</p>
     </header>
     
-    <button class="back-btn" onclick="showCategories()">← Back to Categories</button>
+    <div class="breadcrumbs">
+      <span onclick="goHome()">Categories</span>
+      <span id="crumb1" style="display:none"> → <span onclick="showCategories()"></span></span>
+      <span id="crumb2" style="display:none"> → <span onclick="showServices()"></span></span>
+      <span id="crumb3" style="display:none"> → <span class="current"></span></span>
+    </div>
+    
+    <button class="back-btn" id="backBtn" onclick="goBack()">← Back</button>
     
     <!-- Categories View -->
     <div class="categories-grid" id="categoriesView">
-      <!-- Chat -->
-      <div class="category-card" onclick="showDetail('chat')">
-        <div class="category-header">
-          <div class="category-icon">💬</div>
-          <span class="category-title">Chat</span>
-        </div>
+      <div class="category-card" onclick="showCategory('chat')">
+        <div class="category-header"><div class="category-icon">💬</div><span class="category-title">Chat</span></div>
         <div class="category-stats">
-          <div class="stat">
-            <div class="stat-value">2.4M</div>
-            <div class="stat-label">requests</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">$1.2K</div>
-            <div class="stat-label">volume</div>
-          </div>
+          <div class="stat"><div class="stat-value">2.4M</div><div class="stat-label">requests</div></div>
+          <div class="stat"><div class="stat-value">$1.2K</div><div class="stat-label">volume</div></div>
         </div>
-        <div class="top-apis">
-          <div class="api-row"><span class="api-rank gold">1</span><span class="api-name">parallel</span><span class="api-usage">892K req</span></div>
-          <div class="api-row"><span class="api-rank silver">2</span><span class="api-name">grokx</span><span class="api-usage">654K req</span></div>
-          <div class="api-row"><span class="api-rank bronze">3</span><span class="api-name">slamai</span><span class="api-usage">421K req</span></div>
-          <div class="api-row"><span class="api-rank">4</span><span class="api-name">nano-banana</span><span class="api-usage">289K req</span></div>
-          <div class="api-row"><span class="api-rank">5</span><span class="api-name">nano-banana-2</span><span class="api-usage">134K req</span></div>
+        <div class="top-items">
+          <div class="item-row"><span class="item-rank gold">1</span><span class="item-name">parallel</span><span class="item-usage">892K</span></div>
+          <div class="item-row"><span class="item-rank silver">2</span><span class="item-name">grokx</span><span class="item-usage">654K</span></div>
+          <div class="item-row"><span class="item-rank bronze">3</span><span class="item-name">slamai</span><span class="item-usage">421K</span></div>
         </div>
-        <div class="view-all">View all 4 →</div>
       </div>
       
-      <!-- Coding -->
-      <div class="category-card" onclick="showDetail('coding')">
-        <div class="category-header">
-          <div class="category-icon">💻</div>
-          <span class="category-title">Coding</span>
-        </div>
+      <div class="category-card" onclick="showCategory('coding')">
+        <div class="category-header"><div class="category-icon">💻</div><span class="category-title">Coding</span></div>
         <div class="category-stats">
-          <div class="stat">
-            <div class="stat-value">1.8M</div>
-            <div class="stat-label">requests</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">$890</div>
-            <div class="stat-label">volume</div>
-          </div>
+          <div class="stat"><div class="stat-value">1.8M</div><div class="stat-label">requests</div></div>
+          <div class="stat"><div class="stat-value">$890</div><div class="stat-label">volume</div></div>
         </div>
-        <div class="top-apis">
-          <div class="api-row"><span class="api-rank gold">1</span><span class="api-name">browserbase</span><span class="api-usage">1.2M req</span></div>
-          <div class="api-row"><span class="api-rank silver">2</span><span class="api-name">baseten</span><span class="api-usage">600K req</span></div>
+        <div class="top-items">
+          <div class="item-row"><span class="item-rank gold">1</span><span class="item-name">browserbase</span><span class="item-usage">1.2M</span></div>
+          <div class="item-row"><span class="item-rank silver">2</span><span class="item-name">baseten</span><span class="item-usage">600K</span></div>
         </div>
-        <div class="view-all">View all 2 →</div>
       </div>
       
-      <!-- Entertainment -->
-      <div class="category-card" onclick="showDetail('entertainment')">
-        <div class="category-header">
-          <div class="category-icon">🎮</div>
-          <span class="category-title">Entertainment</span>
-        </div>
+      <div class="category-card" onclick="showCategory('entertainment')">
+        <div class="category-header"><div class="category-icon">🎮</div><span class="category-title">Entertainment</span></div>
         <div class="category-stats">
-          <div class="stat">
-            <div class="stat-value">890K</div>
-            <div class="stat-label">requests</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">$445</div>
-            <div class="stat-label">volume</div>
-          </div>
+          <div class="stat"><div class="stat-value">890K</div><div class="stat-label">requests</div></div>
+          <div class="stat"><div class="stat-value">$445</div><div class="stat-label">volume</div></div>
         </div>
-        <div class="top-apis">
-          <div class="api-row"><span class="api-rank gold">1</span><span class="api-name">tavus</span><span class="api-usage">412K req</span></div>
-          <div class="api-row"><span class="api-rank silver">2</span><span class="api-name">logo</span><span class="api-usage">298K req</span></div>
-          <div class="api-row"><span class="api-rank bronze">3</span><span class="api-name">reddit</span><span class="api-usage">180K req</span></div>
+        <div class="top-items">
+          <div class="item-row"><span class="item-rank gold">1</span><span class="item-name">tavus</span><span class="item-usage">412K</span></div>
+          <div class="item-row"><span class="item-rank silver">2</span><span class="item-name">logo</span><span class="item-usage">298K</span></div>
         </div>
-        <div class="view-all">View all 4 →</div>
       </div>
       
-      <!-- Productivity -->
-      <div class="category-card" onclick="showDetail('productivity')">
-        <div class="category-header">
-          <div class="category-icon">⚡</div>
-          <span class="category-title">Productivity</span>
-        </div>
+      <div class="category-card" onclick="showCategory('productivity')">
+        <div class="category-header"><div class="category-icon">⚡</div><span class="category-title">Productivity</span></div>
         <div class="category-stats">
-          <div class="stat">
-            <div class="stat-value">12.4M</div>
-            <div class="stat-label">requests</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">$6.2K</div>
-            <div class="stat-label">volume</div>
-          </div>
+          <div class="stat"><div class="stat-value">12.4M</div><div class="stat-label">requests</div></div>
+          <div class="stat"><div class="stat-value">$6.2K</div><div class="stat-label">volume</div></div>
         </div>
-        <div class="top-apis">
-          <div class="api-row"><span class="api-rank gold">1</span><span class="api-name">firecrawl</span><span class="api-usage">3.2M req</span></div>
-          <div class="api-row"><span class="api-rank silver">2</span><span class="api-name">perplexity</span><span class="api-usage">2.1M req</span></div>
-          <div class="api-row"><span class="api-rank bronze">3</span><span class="api-name">apollo</span><span class="api-usage">1.8M req</span></div>
-          <div class="api-row"><span class="api-rank">4</span><span class="api-name">coingecko</span><span class="api-usage">1.4M req</span></div>
-          <div class="api-row"><span class="api-rank">5</span><span class="api-name">searchapi</span><span class="api-usage">1.1M req</span></div>
+        <div class="top-items">
+          <div class="item-row"><span class="item-rank gold">1</span><span class="item-name">firecrawl</span><span class="item-usage">3.2M</span></div>
+          <div class="item-row"><span class="item-rank silver">2</span><span class="item-name">perplexity</span><span class="item-usage">2.1M</span></div>
+          <div class="item-row"><span class="item-rank bronze">3</span><span class="item-name">apollo</span><span class="item-usage">1.8M</span></div>
         </div>
-        <div class="view-all">View all 50+ →</div>
       </div>
     </div>
     
-    <!-- Detail View -->
-    <div class="detail-view" id="detailView">
-      <h2 class="detail-title" id="detailTitle">Category</h2>
-      <div class="detail-grid" id="detailGrid"></div>
+    <!-- Services View -->
+    <div class="detail-view" id="servicesView">
+      <h2 class="detail-title" id="servicesTitle">Category</h2>
+      <div id="servicesContent"></div>
+    </div>
+    
+    <!-- Providers View -->
+    <div class="provider-view" id="providersView">
+      <h2 class="detail-title" id="providersTitle">Providers</h2>
+      <div class="provider-list" id="providersContent"></div>
     </div>
   </div>
 
   <script>
-    const categoryData = {
+    const data = {
       chat: {
-        title: "💬 Chat",
-        apis: [
-          { name: "parallel", usage: "892K req", desc: "AI agent that searches and executes tasks" },
-          { name: "grokx", usage: "654K req", desc: "Grok AI chat model access" },
-          { name: "slamai", usage: "421K req", desc: "AI agent platform" },
-          { name: "nano-banana", usage: "289K req", desc: "Lightweight AI model" },
-        ]
+        name: "💬 Chat",
+        subcategories: {
+          "Interface": [
+            { name: "parallel", usage: "892K", desc: "AI agent that searches and executes tasks", providers: [
+              { name: "Parallel AI", req: "650K", vol: "$320", desc: "Main provider" },
+              { name: "LangChain", req: "242K", vol: "$120", desc: "Alternative endpoint" },
+            ]},
+            { name: "grokx", usage: "654K", desc: "Grok AI chat model access", providers: [
+              { name: "xAI", req: "654K", vol: "$327", desc: "Official xAI API" },
+            ]},
+            { name: "slamai", usage: "421K", desc: "AI agent platform", providers: [
+              { name: "Slam AI", req: "421K", vol: "$210", desc: "Primary" },
+            ]},
+          ],
+          "Models": [
+            { name: "nano-banana", usage: "289K", desc: "Lightweight AI model", providers: [
+              { name: "Anthropic", req: "180K", vol: "$90", desc: "via Claude" },
+              { name: "OpenAI", req: "109K", vol: "$54", desc: "via GPT" },
+            ]},
+          ]
+        }
       },
       coding: {
-        title: "💻 Coding",
-        apis: [
-          { name: "browserbase", usage: "1.2M req", desc: "Browser automation for web scraping and testing" },
-          { name: "baseten", usage: "600K req", desc: "Deploy and run AI models" },
-        ]
+        name: "💻 Coding",
+        subcategories: {
+          "Browser": [
+            { name: "browserbase", usage: "1.2M", desc: "Browser automation for web scraping", providers: [
+              { name: "Browserbase", req: "850K", vol: "$425", desc: "Official" },
+              { name: "StealthFox", req: "350K", vol: "$175", desc: "Alternative" },
+            ]},
+          ],
+          "Models": [
+            { name: "baseten", usage: "600K", desc: "Deploy and run AI models", providers: [
+              { name: "Baseten", req: "600K", vol: "$300", desc: "Primary" },
+            ]},
+          ]
+        }
       },
       entertainment: {
-        title: "🎮 Entertainment",
-        apis: [
-          { name: "tavus", usage: "412K req", desc: "AI video generation" },
-          { name: "logo", usage: "298K req", desc: "AI-powered logo generation" },
-          { name: "reddit", usage: "180K req", desc: "Reddit API access" },
-          { name: "scrape-creators", usage: "95K req", desc: "Twitter/X data scraping" },
-        ]
+        name: "🎮 Entertainment",
+        subcategories: {
+          "Video": [
+            { name: "tavus", usage: "412K", desc: "AI video generation", providers: [
+              { name: "Tavus", req: "412K", vol: "$206", desc: "Official" },
+            ]},
+          ],
+          "Image": [
+            { name: "logo", usage: "298K", desc: "AI-powered logo generation", providers: [
+              { name: "LogoAI", req: "180K", vol: "$90", desc: "Primary" },
+              { name: "Brandpad", req: "118K", vol: "$59", desc: "Secondary" },
+            ]},
+          ],
+          "Social": [
+            { name: "reddit", usage: "180K", desc: "Reddit API access", providers: [
+              { name: "Reddit", req: "180K", vol: "$90", desc: "Official" },
+            ]},
+          ]
+        }
       },
       productivity: {
-        title: "⚡ Productivity",
-        apis: [
-          { name: "firecrawl", usage: "3.2M req", desc: "Web scraping with AI extraction" },
-          { name: "perplexity", usage: "2.1M req", desc: "AI-powered search engine" },
-          { name: "apollo", usage: "1.8M req", desc: "B2B lead generation" },
-          { name: "coingecko", usage: "1.4M req", desc: "Cryptocurrency data" },
-          { name: "searchapi", usage: "1.1M req", desc: "Google search API" },
-          { name: "tavily", usage: "890K req", desc: "AI search for AI agents" },
-          { name: "jina", usage: "765K req", desc: "Jina AI reader and search" },
-          { name: "scrapegraph", usage: "654K req", desc: "Graph-based web scraping" },
-        ]
+        name: "⚡ Productivity",
+        subcategories: {
+          "Search": [
+            { name: "perplexity", usage: "2.1M", desc: "AI-powered search engine", providers: [
+              { name: "Perplexity", req: "2.1M", vol: "$1.05M", desc: "Official" },
+            ]},
+            { name: "tavily", usage: "890K", desc: "AI search for agents", providers: [
+              { name: "Tavily", req: "890K", vol: "$445", desc: "Primary" },
+            ]},
+          ],
+          "Scraping": [
+            { name: "firecrawl", usage: "3.2M", desc: "Web scraping with AI extraction", providers: [
+              { name: "Firecrawl", req: "2.4M", vol: "$1.2M", desc: "Official" },
+              { name: "ScrapeIt", req: "800K", vol: "$400", desc: "Reseller" },
+            ]},
+            { name: "scrapegraph", usage: "654K", desc: "Graph-based scraping", providers: [
+              { name: "ScrapeGraph", req: "654K", vol: "$327", desc: "Primary" },
+            ]},
+          ],
+          "Leads": [
+            { name: "apollo", usage: "1.8M", desc: "B2B lead generation", providers: [
+              { name: "Apollo", req: "1.8M", vol: "$900", desc: "Official" },
+            ]},
+            { name: "hunter", usage: "543K", desc: "Email finder", providers: [
+              { name: "Hunter", req: "543K", vol: "$271", desc: "Primary" },
+            ]},
+          ],
+          "Crypto": [
+            { name: "coingecko", usage: "1.4M", desc: "Cryptocurrency data", providers: [
+              { name: "CoinGecko", req: "1.4M", vol: "$700", desc: "Official" },
+            ]},
+          ]
+        }
       }
     };
     
-    function showDetail(category) {
+    let history = ['home'];
+    
+    function showCategory(cat) {
+      history.push(cat);
+      const d = data[cat];
       document.getElementById('categoriesView').style.display = 'none';
-      document.getElementById('detailView').style.display = 'block';
-      document.querySelector('.back-btn').style.display = 'block';
+      document.getElementById('servicesView').style.display = 'block';
+      document.getElementById('providersView').style.display = 'none';
+      document.getElementById('backBtn').style.display = 'block';
+      document.getElementById('servicesTitle').textContent = d.name;
       
-      const data = categoryData[category];
-      document.getElementById('detailTitle').textContent = data.title;
-      
-      const grid = document.getElementById('detailGrid');
-      grid.innerHTML = data.apis.map(api => `
-        <div class="detail-card">
-          <div class="detail-card-header">
-            <span class="detail-card-name">${api.name}</span>
-            <span class="detail-card-usage">${api.usage}</span>
-          </div>
-          <p class="detail-card-desc">${api.desc}</p>
-        </div>
-      `).join('');
+      let html = '';
+      for (const [subcat, services] of Object.entries(d.subcategories)) {
+        html += `<div class="subcategory-section"><div class="subcategory-title">${subcat}</div><div class="service-grid">`;
+        for (const svc of services) {
+          html += `<div class="service-card" onclick="showProviders('${cat}', '${subcat}', '${svc.name}')">
+            <div class="service-card-header"><span class="service-name">${svc.name}</span><span class="service-usage">${svc.usage}</span></div>
+            <p class="service-desc">${svc.desc}</p>
+            <div class="service-providers">${svc.providers.map(p => `<span class="provider-tag">${p.name}</span>`).join('')}</div>
+          </div>`;
+        }
+        html += '</div></div>';
+      }
+      document.getElementById('servicesContent').innerHTML = html;
+      updateBreadcrumbs(cat);
     }
     
-    function showCategories() {
+    function showProviders(cat, subcat, svcName) {
+      history.push(`${cat}/${subcat}/${svcName}`);
+      const d = data[cat].subcategories[subcat].find(s => s.name === svcName);
+      document.getElementById('servicesView').style.display = 'none';
+      document.getElementById('providersView').style.display = 'block';
+      document.getElementById('providersTitle').textContent = `${svcName} Providers`;
+      
+      let html = '';
+      d.providers.forEach((p, i) => {
+        html += `<div class="provider-card">
+          <div class="provider-rank">#${i+1}</div>
+          <div class="provider-info"><div class="provider-name">${p.name}</div><div class="provider-desc">${p.desc}</div></div>
+          <div class="provider-stats"><div class="provider-req">${p.req}</div><div class="provider-vol">${p.vol}</div></div>
+        </div>`;
+      });
+      document.getElementById('providersContent').innerHTML = html;
+      updateBreadcrumbs(cat, subcat, svcName);
+    }
+    
+    function goBack() {
+      if (history.length <= 1) { goHome(); return; }
+      history.pop();
+      const last = history[history.length - 1];
+      if (last === 'home') goHome();
+      else if (last.includes('/')) { const [c, s, n] = last.split('/'); showProviders(c, s, n); }
+      else showCategory(last);
+    }
+    
+    function goHome() {
+      history = ['home'];
       document.getElementById('categoriesView').style.display = 'grid';
-      document.getElementById('detailView').style.display = 'none';
-      document.querySelector('.back-btn').style.display = 'none';
+      document.getElementById('servicesView').style.display = 'none';
+      document.getElementById('providersView').style.display = 'none';
+      document.getElementById('backBtn').style.display = 'none';
+      document.getElementById('crumb1').style.display = 'none';
+      document.getElementById('crumb2').style.display = 'none';
+      document.getElementById('crumb3').style.display = 'none';
+    }
+    
+    function updateBreadcrumbs(cat, subcat, svc) {
+      document.getElementById('crumb1').style.display = 'inline';
+      document.getElementById('crumb1').querySelector('span').textContent = data[cat].name;
+      if (subcat) {
+        document.getElementById('crumb2').style.display = 'inline';
+        document.getElementById('crumb2').querySelector('span').textContent = subcat;
+      } else {
+        document.getElementById('crumb2').style.display = 'none';
+      }
+      if (svc) {
+        document.getElementById('crumb3').style.display = 'inline';
+        document.getElementById('crumb3').querySelector('span').textContent = svc;
+      } else {
+        document.getElementById('crumb3').style.display = 'none';
+      }
     }
   </script>
 </body>
